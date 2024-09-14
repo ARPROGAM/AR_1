@@ -3,32 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AR Experience</title>
+    <title>ARZU</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Scene for AR -->
-    <a-scene embedded arjs>
-        <!-- GLB Model -->
-        <a-assets>
-            <a-asset-item id="model" src="model.glb"></a-asset-item>
-        </a-assets>
-        <a-entity 
-            gltf-model="#model" 
-            scale="0.5 0.5 0.5"
-            position="0 0 0" 
-            gesture-handler>
-        </a-entity>
-    </a-scene>
+    <model-viewer id="ar-model" src="model.glb" alt="3D Model" ar ar-modes="scene-viewer webxr quick-look" 
+                  environment-image="neutral" disable-zoom></model-viewer>
 
-    <!-- AI Interaction -->
-    <div id="ai">
-        <p id="ai-text">Hello! I'm your AR assistant. Tap on me to ask questions!</p>
-    </div>
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const modelViewer = document.getElementById('ar-model');
+            
+            // Function to enter AR mode automatically
+            function enterAR() {
+                if (modelViewer) {
+                    modelViewer.enterAR(); // This function should trigger AR mode if supported
+                }
+            }
 
-    <!-- JavaScript -->
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://rawgit.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-    <script src="script.js"></script>
+            // Wait for the model-viewer to be ready
+            modelViewer.addEventListener('load', () => {
+                // Check if AR is available and then trigger it
+                if (modelViewer.canEnterAR) {
+                    enterAR();
+                }
+            });
+        });
+    </script>
 </body>
 </html>
